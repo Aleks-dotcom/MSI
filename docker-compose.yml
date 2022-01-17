@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  msi_app:
+    build: ./app_docker_env
+    user: root
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=msi_db
+      - DATABASE_USER=test
+      - DATABASE_PASSWORD=test
+      - DATABASE=igralci
+      - REDIS_URL=msi_cache
+      - REDIS_PORT=6379
+    depends_on:
+      - msi_db
+
+  # nginx:
+  #   image: nginx:latest
+  #   restart: always
+  #   volumes:
+  #     - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - msi_app
+
+  msi_db:
+    build: ./database_app_docker
+    restart: always
+    volumes:
+      - .data/mysql:/var/lib/mysql
+
+  msi_cache:
+    image: redis:latest
+    restart: always
+    volumes:
+    - .data/redis:/data
