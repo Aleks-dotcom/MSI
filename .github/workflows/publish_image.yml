@@ -6,8 +6,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build_push:
+  build_push_app:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app_docker_env
     steps:
       - name: Repo lowecase
         run: |
@@ -20,14 +23,12 @@ jobs:
       - name: Check file existence app
         id: check_files
         uses: andstor/file-existence-action@v1
-        working-directory: ./app_docker_env
         with:
           files: "Dockerfile"
 
       - name: File exists app
         if: steps.build_push.outputs.files_exists == 'true'
         uses: docker/build-push-action@v1
-        working-directory: ./app_docker_env
         with:
           username: dsecid
           password: ${{ secrets.REGISTRY_TOKEN }}
@@ -36,17 +37,29 @@ jobs:
           tag_with_ref: true
           name: 'Buraz'
 
-      - name: Check file existence database
+  build_push_db:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: database_app_docker
+    steps:
+      - name: Repo lowecase
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+          
+      - name: Checkout repo
+        uses: actions/checkout@v1
+
+
+      - name: Check file existence app
         id: check_files
         uses: andstor/file-existence-action@v1
-        working-directory: ./database_app_docker
         with:
           files: "Dockerfile"
 
-      - name: File exists database
+      - name: File exists db
         if: steps.build_push.outputs.files_exists == 'true'
         uses: docker/build-push-action@v1
-        working-directory: ./database_app_docker
         with:
           username: dsecid
           password: ${{ secrets.REGISTRY_TOKEN }}
