@@ -9,8 +9,7 @@ jobs:
   build_push_app:
     runs-on: ubuntu-latest
     defaults:
-      run:
-        working-directory: app_docker_env
+      working-directory: app_docker_env
     steps:
 
       - name: Checkout repo
