@@ -24,7 +24,7 @@ jobs:
           files: "./app_docker_env/Dockerfile"
 
       - name: File exists app
-        if: steps.build_push.outputs.files_exists == 'true'
+        if: steps.build_push_app.outputs.files_exists == 'true'
         uses: docker/build-push-action@v1
         with:
           context: ./app_docker_env
@@ -51,7 +51,7 @@ jobs:
           files: "./database_app_docker/Dockerfile"
 
       - name: File exists db
-        if: steps.build_push.outputs.files_exists == 'true'
+        if: steps.build_push_db.outputs.files_exists == 'true'
         uses: docker/build-push-action@v1
         with:
           context: ./database_app_docker
