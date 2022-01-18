@@ -12,14 +12,14 @@ jobs:
       run:
         working-directory: app_docker_env
     steps:
-      - name: Repo lowecase
-        run: |
-          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-          
+
       - name: Checkout repo
         uses: actions/checkout@v1
 
-
+      - name: Repo lowecase
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        
       - name: Check file existence app
         id: check_files
         uses: andstor/file-existence-action@v1
