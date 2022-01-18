@@ -1,4 +1,4 @@
-name: "TestPush"
+name: "TestPush "
 on:
   push:
     branches: [ $default-branch ]
