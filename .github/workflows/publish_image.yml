@@ -35,6 +35,7 @@ jobs:
           context: ./app_docker_env
           # Note: tags has to be all lower-case
           tags: ${{ env.REPO }}
+          push: true
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
