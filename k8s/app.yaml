@@ -1,0 +1,66 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: main-app
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: main-app
+  template:
+    metadata:
+      labels:
+        app: main-app
+    spec:
+      containers:
+        name: main-app-container
+        image: dsecid/msi_app
+        ports:
+          containerPort: 5000
+
+        env:
+          name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: url-configmap
+              key: database_url
+
+          name: DATABASE_USER
+          value: test
+          
+          name: DATABASE_PASSWORD
+          value: test
+
+          name: DATABASE
+          value: igralci
+
+          name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: url-configmap
+              key: redis_url
+
+          name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: url-configmap
+              key: redis_port
+
+        imagePullPolicy: Always
+      imagePullSecrets:
+        name: registry-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: app-service
+  ports:
+    protocol: TCP
+    port: 5000
+    targetPort: 5000

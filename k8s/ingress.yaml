@@ -1,0 +1,12 @@
+apiVersion: app/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+    hosts: <TBD>
+    http:
+      paths:
+        backend:
+          serviceName: app-service
+          servicePort: 5000
