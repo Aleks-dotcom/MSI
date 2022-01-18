@@ -1,4 +1,4 @@
-name: "Stage challenge for production"
+name: "TestPush"
 on:
   push:
     branches: [ $default-branch ]
