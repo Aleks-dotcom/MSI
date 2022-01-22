@@ -1,11 +1,11 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-deployment
   labels:
     app: main-app
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: main-app
@@ -15,42 +15,39 @@ spec:
         app: main-app
     spec:
       containers:
-        name: main-app-container
+      - name: main-app-container
         image: dsecid/msi_app
         ports:
-          containerPort: 5000
+        - containerPort: 5000
 
         env:
-          name: DATABASE_URL
+        - name: DATABASE_URL
           valueFrom:
             configMapKeyRef:
               name: url-configmap
               key: database_url
 
-          name: DATABASE_USER
+        - name: DATABASE_USER
           value: test
           
-          name: DATABASE_PASSWORD
+        - name: DATABASE_PASSWORD
           value: test
 
-          name: DATABASE
+        - name: DATABASE
           value: igralci
 
-          name: REDIS_URL
+        - name: REDIS_URL
           valueFrom:
             configMapKeyRef:
               name: url-configmap
               key: redis_url
 
-          name: REDIS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: url-configmap
-              key: redis_port
+        - name: REDIS_PORT
+          value: "6379"
 
         imagePullPolicy: Always
       imagePullSecrets:
-        name: registry-secret
+      - name: registry-secret
 
 ---
 apiVersion: v1
@@ -59,8 +56,8 @@ metadata:
   name: app-service
 spec:
   selector:
-    app: app-service
+    app: main-app
   ports:
-    protocol: TCP
+  - protocol: TCP
     port: 5000
     targetPort: 5000

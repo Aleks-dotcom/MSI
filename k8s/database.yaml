@@ -1,9 +1,9 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysqldb-deployment
   labels:
-    app: mysql
+    app: mysqldb
 spec:
   replicas: 1
   selector:
@@ -15,31 +15,31 @@ spec:
         app: mysqldb
     spec:
       containers:
-        name: mysqldb-container
+      - name: mysqldb-container
         image: dsecid/msi_app_database
         ports:
-          containerPort: 3306
+          - containerPort: 3306
         imagePullPolicy: Always
-      env:
-        name: MYSQL_ROOT_PASSWORD
-        value: test
-        name: MYSQL_USER
-        value: test
-        name: MYSQL_PASSWORD
-        value: test
-        name: MYSQL_DATABASE
-        value: igralci
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: test
+        - name: MYSQL_USER
+          value: test
+        - name: MYSQL_PASSWORD
+          value: test
+        - name: MYSQL_DATABASE
+          value: igralci
       imagePullSecrets:
-        name: registry-secret
+        - name: registry-secret
 ---
-apiVersion: app/v1
+apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
 spec:
   selector:
-    app: mysql
+    app: mysqldb
   ports:
-    protocol: TCP
-    port: 3306
-    targetPort: 3306
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
