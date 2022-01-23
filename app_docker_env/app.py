@@ -22,7 +22,6 @@ if database == -1:
     sys.exit(-1)
 
 
-cursor = database.cursor()
 sql_shrani = "INSERT INTO data (name, proga, score, scoreNumeric) values (%s, %s, %s, %s)"
 sql_pridobi = "SELECT * FROM data "
 sql_pridobi_id = "SELECT * FROM data WHERE id = %s"
@@ -31,16 +30,20 @@ sql_delete_all = "DELETE FROM data WHERE 1=1"
 
 @app.route("/shrani",methods=['POST'])
 def shrani_podatek():
+
     data = request.json
     try:
         args = (data['name'],data['proga'],data['score'], data['scoreNumeric'])
     except:
         return 'data is malformed or not complete'
     if data != None:
+        cursor = database.cursor()
+
         print(args)
         cursor.execute(sql_shrani,args)
         database.commit()
         # print(podatki_leaderboard)
+        cursor.close()
         return 'OK'
     else:
         return 'FAILED Something went wrong! data is None'
@@ -48,8 +51,10 @@ def shrani_podatek():
 
 @app.route("/pridobi",methods=['GET'])
 def pridobi_podatke():
+    cursor = database.cursor()
     cursor.execute(sql_pridobi)
     data = cursor.fetchall()
+    cursor.close()
     if data == None:
         return "404"
 
@@ -65,10 +70,14 @@ def pridobi_podatek(get_id):
     if redis.exists(get_id):
         return redis.get(get_id)
     else:    
+        cursor = database.cursor()
+
         args = tuple([int(get_id)])
         print(args)
         cursor.execute(sql_pridobi_id,args)
         data = cursor.fetchone()
+        cursor.close()
+
         if data == None:
             return "404"
         redis.set(data[0],json.dumps(list(data)))
@@ -79,9 +88,13 @@ def pridobi_podatek(get_id):
 def delete_id(delete_id):
     args = tuple([int(delete_id)])
     try:
+        cursor = database.cursor()
+
         cursor.execute(sql_delete_id,args)
         database.commit()
         redis.delete(delete_id)
+        cursor.close()
+
         return 'OK'
     except:
         return 'FAILED try catch -> ni idja al pa ni podatka s tem idjem'
@@ -90,8 +103,10 @@ def delete_id(delete_id):
 
 @app.route('/nuke',methods=['DELETE'])
 def nuke():
+    cursor = database.cursor()
     cursor.execute(sql_delete_all)
     database.commit()
     redis.flushdb()
+    cursor.close()
     return "OK"
 
