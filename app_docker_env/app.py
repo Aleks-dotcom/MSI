@@ -7,7 +7,6 @@ import sys
 
 app = Flask(__name__)
 
-database = connection_database()
 
 
 redis = get_connection()
@@ -17,9 +16,10 @@ if redis == -1:
     sys.exit(-1)
 
 
-if database == -1:
-    print("DATABASE CONNECTION FAILED")
-    sys.exit(-1)
+def  check_db(db_conn):
+    if db_conn == -1:
+        print("DATABASE CONNECTION FAILED")
+        sys.exit(-1)
 
 
 sql_shrani = "INSERT INTO data (name, proga, score, scoreNumeric) values (%s, %s, %s, %s)"
@@ -37,13 +37,15 @@ def shrani_podatek():
     except:
         return 'data is malformed or not complete'
     if data != None:
+        database = connection_database()
+        check_db(database)
         cursor = database.cursor()
-
         print(args)
         cursor.execute(sql_shrani,args)
         database.commit()
         # print(podatki_leaderboard)
         cursor.close()
+        database.close()
         return 'OK'
     else:
         return 'FAILED Something went wrong! data is None'
@@ -51,10 +53,14 @@ def shrani_podatek():
 
 @app.route("/pridobi",methods=['GET'])
 def pridobi_podatke():
+    database = connection_database()
+    check_db(database)
+
     cursor = database.cursor()
     cursor.execute(sql_pridobi)
     data = cursor.fetchall()
     cursor.close()
+    database.close()
     if data == None:
         return "404"
 
@@ -70,6 +76,9 @@ def pridobi_podatek(get_id):
     if redis.exists(get_id):
         return redis.get(get_id)
     else:    
+        database = connection_database()
+        check_db(database)
+
         cursor = database.cursor()
 
         args = tuple([int(get_id)])
@@ -77,7 +86,7 @@ def pridobi_podatek(get_id):
         cursor.execute(sql_pridobi_id,args)
         data = cursor.fetchone()
         cursor.close()
-
+        database.close()
         if data == None:
             return "404"
         redis.set(data[0],json.dumps(list(data)))
@@ -88,13 +97,16 @@ def pridobi_podatek(get_id):
 def delete_id(delete_id):
     args = tuple([int(delete_id)])
     try:
+        database = connection_database()
+        check_db(database)
+
         cursor = database.cursor()
 
         cursor.execute(sql_delete_id,args)
         database.commit()
         redis.delete(delete_id)
         cursor.close()
-
+        database.close()
         return 'OK'
     except:
         return 'FAILED try catch -> ni idja al pa ni podatka s tem idjem'
@@ -103,10 +115,14 @@ def delete_id(delete_id):
 
 @app.route('/nuke',methods=['DELETE'])
 def nuke():
+    database = connection_database()
+    check_db(database)
     cursor = database.cursor()
     cursor.execute(sql_delete_all)
     database.commit()
     redis.flushdb()
     cursor.close()
+    database.close()
     return "OK"
+
 
