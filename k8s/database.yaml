@@ -29,6 +29,13 @@ spec:
           value: test
         - name: MYSQL_DATABASE
           value: igralci
+        volumeMounts:
+          - mountPath: "/var/lib/mysql"
+            name: vol
+      volumes:
+        - name: vol
+          persistentVolumeClaim:
+            claimName: storage-azure-claim-3
       imagePullSecrets:
         - name: registry-secret
 ---
