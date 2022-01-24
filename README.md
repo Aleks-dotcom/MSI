@@ -6,3 +6,6 @@ k8s-iseze backend game server (used to store data about the scoreboard). This se
 The final setup is describet in final_setup.txt. So we have an ingress rule that forwards all the trafic to the app service that is wrapped around pods in app deployment that uses a redis cache and a mysql database to stor its data. Volumes are used in mysql database so that in case of failure, the data stays intact. liveprobes are present in main app by trying to fetch data from /pridobi. If pod returns 4XX or 5XX it is considered dead/unheathy and it should will be restarted.
 
 I used file-shares in Azure as volumes for mysql database and I am not really happy with the speed at which the new mysql pod is generated (1-2 mins).
+
+
+The setup was tested with 5 repolicas off app-pod and works fine. It is currently set to 2 since I dont have to much money to spend on azure AKS. But you can increas them if needed.
