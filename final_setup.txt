@@ -1,0 +1,79 @@
+NAMESPACE       NAME                                            READY   STATUS      RESTARTS   AGE
+default         pod/app-deployment-7dfd6bd88d-9k946             1/1     Running     1          24h
+default         pod/app-deployment-7dfd6bd88d-p6g7h             1/1     Running     1          24h
+default         pod/mysqldb-deployment-64f8bd-r28n6             1/1     Running     1          24h
+default         pod/redis-deployment-9d76c76b7-2777l            1/1     Running     0          5d6h
+ingress-nginx   pod/ingress-nginx-admission-create-xtssz        0/1     Completed   0          5d4h
+ingress-nginx   pod/ingress-nginx-admission-patch-cx2q6         0/1     Completed   0          5d4h
+ingress-nginx   pod/ingress-nginx-controller-54d8b558d4-l7l4v   1/1     Running     0          5d4h
+kube-system     pod/azure-ip-masq-agent-zd6x2                   1/1     Running     0          5d8h
+kube-system     pod/coredns-845757d86-5l69k                     1/1     Running     0          5d8h
+kube-system     pod/coredns-845757d86-b4z5g                     1/1     Running     0          5d8h
+kube-system     pod/coredns-autoscaler-5f85dc856b-6ntvz         1/1     Running     3          5d8h
+kube-system     pod/csi-azuredisk-node-jcvt5                    3/3     Running     0          5d8h
+kube-system     pod/csi-azurefile-node-sn7l2                    3/3     Running     0          5d8h
+kube-system     pod/kube-proxy-f25tz                            1/1     Running     0          5d8h
+kube-system     pod/metrics-server-6bc97b47f7-w6pm2             1/1     Running     6          5d8h
+kube-system     pod/omsagent-28kfr                              2/2     Running     0          5d8h
+kube-system     pod/omsagent-rs-56954b8844-fqlbc                1/1     Running     0          5d8h
+kube-system     pod/tunnelfront-5579d46bd5-wq92b                1/1     Running     0          5d7h
+
+NAMESPACE       NAME                                         TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)                      AGE
+default         service/app-service                          ClusterIP      10.0.182.240   <none>          5000/TCP                     5d6h
+default         service/kubernetes                           ClusterIP      10.0.0.1       <none>          443/TCP                      5d8h
+default         service/mysql-service                        ClusterIP      10.0.149.235   <none>          3306/TCP                     5d6h
+default         service/redis-service                        ClusterIP      10.0.237.116   <none>          6379/TCP                     5d6h
+ingress-nginx   service/ingress-nginx-controller             LoadBalancer   10.0.187.59    20.93.185.230   80:32705/TCP,443:32654/TCP   5d4h
+ingress-nginx   service/ingress-nginx-controller-admission   ClusterIP      10.0.51.140    <none>          443/TCP                      5d4h
+kube-system     service/healthmodel-replicaset-service       ClusterIP      10.0.61.114    <none>          25227/TCP                    5d8h
+kube-system     service/kube-dns                             ClusterIP      10.0.0.10      <none>          53/UDP,53/TCP                5d8h
+kube-system     service/metrics-server                       ClusterIP      10.0.121.119   <none>          443/TCP                      5d8h
+
+NAMESPACE     NAME                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                 AGE
+kube-system   daemonset.apps/azure-ip-masq-agent      1         1         1       1            1           beta.kubernetes.io/os=linux   5d8h
+kube-system   daemonset.apps/csi-azuredisk-node       1         1         1       1            1           kubernetes.io/os=linux        5d8h
+kube-system   daemonset.apps/csi-azuredisk-node-win   0         0         0       0            0           kubernetes.io/os=windows      5d8h
+kube-system   daemonset.apps/csi-azurefile-node       1         1         1       1            1           kubernetes.io/os=linux        5d8h
+kube-system   daemonset.apps/csi-azurefile-node-win   0         0         0       0            0           kubernetes.io/os=windows      5d8h
+kube-system   daemonset.apps/kube-proxy               1         1         1       1            1           beta.kubernetes.io/os=linux   5d8h
+kube-system   daemonset.apps/omsagent                 1         1         1       1            1           <none>                        5d8h
+kube-system   daemonset.apps/omsagent-win             0         0         0       0            0           <none>                        5d8h
+
+NAMESPACE       NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+default         deployment.apps/app-deployment             2/2     2            2           5d6h
+default         deployment.apps/mysqldb-deployment         1/1     1            1           5d6h
+default         deployment.apps/redis-deployment           1/1     1            1           5d6h
+ingress-nginx   deployment.apps/ingress-nginx-controller   1/1     1            1           5d4h
+kube-system     deployment.apps/coredns                    2/2     2            2           5d8h
+kube-system     deployment.apps/coredns-autoscaler         1/1     1            1           5d8h
+kube-system     deployment.apps/metrics-server             1/1     1            1           5d8h
+kube-system     deployment.apps/omsagent-rs                1/1     1            1           5d8h
+kube-system     deployment.apps/tunnelfront                1/1     1            1           5d8h
+
+NAMESPACE       NAME                                                  DESIRED   CURRENT   READY   AGE
+default         replicaset.apps/app-deployment-5746964d77             0         0         0       2d11h
+default         replicaset.apps/app-deployment-69d74fddbb             0         0         0       2d11h
+default         replicaset.apps/app-deployment-6b48859f75             0         0         0       25h
+default         replicaset.apps/app-deployment-7dfd6bd88d             2         2         2       24h
+default         replicaset.apps/app-deployment-d4c8648c9              0         0         0       5d6h
+default         replicaset.apps/mysqldb-deployment-556fbf8874         0         0         0       27h
+default         replicaset.apps/mysqldb-deployment-5949b6b9db         0         0         0       5d6h
+default         replicaset.apps/mysqldb-deployment-5f676fb5c6         0         0         0       27h
+default         replicaset.apps/mysqldb-deployment-64f8bd             1         1         1       26h
+default         replicaset.apps/mysqldb-deployment-65b848557c         0         0         0       27h
+default         replicaset.apps/mysqldb-deployment-664bf556bf         0         0         0       27h
+default         replicaset.apps/mysqldb-deployment-67d6d9f8c4         0         0         0       28h
+default         replicaset.apps/mysqldb-deployment-6b994699cb         0         0         0       2d10h
+default         replicaset.apps/mysqldb-deployment-6df98d6df          0         0         0       26h
+default         replicaset.apps/redis-deployment-9d76c76b7            1         1         1       5d6h
+ingress-nginx   replicaset.apps/ingress-nginx-controller-54d8b558d4   1         1         1       5d4h
+kube-system     replicaset.apps/coredns-845757d86                     2         2         2       5d8h
+kube-system     replicaset.apps/coredns-autoscaler-5f85dc856b         1         1         1       5d8h
+kube-system     replicaset.apps/metrics-server-6bc97b47f7             1         1         1       5d8h
+kube-system     replicaset.apps/omsagent-rs-56954b8844                1         1         1       5d8h
+kube-system     replicaset.apps/tunnelfront-5579d46bd5                1         1         1       5d7h
+kube-system     replicaset.apps/tunnelfront-7999d489ff                0         0         0       5d8h
+
+NAMESPACE       NAME                                       COMPLETIONS   DURATION   AGE
+ingress-nginx   job.batch/ingress-nginx-admission-create   1/1           2s         5d4h
+ingress-nginx   job.batch/ingress-nginx-admission-patch    1/1           3s         5d4h
